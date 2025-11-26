@@ -21,10 +21,6 @@ const clothSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    stock: {
-        type: Number,
-        required: true
-    },
     images: [{
         type: String,
         required: true

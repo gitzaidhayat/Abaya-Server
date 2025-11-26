@@ -4,6 +4,11 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const authRoutes = require('./routes/auth.routes');
 const clothRoutes = require('./routes/cloth.routes')
+const wishlistRoutes = require('./routes/wishlist.routes')
+const subscriptionRoutes = require('./routes/subscription.routes')
+const adminRoutes = require('./routes/admin.routes')
+const addressRoutes = require('./routes/address.routes')
+const orderRoutes = require('./routes/order.routes')
 
 
 
@@ -50,6 +55,11 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth', authRoutes);
 app.use('/api/cloth', clothRoutes);
+app.use('/api/wishlist', wishlistRoutes);
+app.use('/api/subscribe', subscriptionRoutes);
+app.use('/api/addresses', addressRoutes);
+app.use('/api/orders', orderRoutes);
+app.use('/admin', adminRoutes);
 
 
 module.exports = app;

@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { body, validationResult } = require('express-validator');
 const userModel = require('../models/user.model');
-const clothPartnerModel = require('../models/clothpartner.model');
+const adminModel = require('../models/admin.model');
 
 // Track login attempts (in production, use Redis)
 const loginAttempts = new Map();
@@ -87,8 +87,8 @@ async function authUserMiddleware(req, res, next) {
     }
 }
 
-// Cloth Partner authentication middleware
-async function authClothPartnerMiddleware(req, res, next) {
+// Admin authentication middleware
+async function authAdminMiddleware(req, res, next) {
     const token = req.cookies.token;
     
     if (!token) {
@@ -99,15 +99,16 @@ async function authClothPartnerMiddleware(req, res, next) {
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const clothPartner = await clothPartnerModel.findById(decoded.id).select('-password');
+        const admin = await adminModel.findById(decoded.id).select('-password');
         
-        if (!clothPartner) {
+        if (!admin) {
             return res.status(401).json({
-                message: "Unauthorized Access - Partner not found"
+                message: "Unauthorized Access - Admin not found"
             })
         }
         
-        req.clothPartner = clothPartner;
+        req.admin = admin;
+        req.user = admin; // Also set req.user for authorizeRoles middleware
         next();
 
     } catch (error) {
@@ -124,7 +125,7 @@ async function authClothPartnerMiddleware(req, res, next) {
 
 module.exports = {
     authUserMiddleware,
-    authClothPartnerMiddleware,
+    authAdminMiddleware,
     checkLoginAttempts,
     recordFailedAttempt,
     resetLoginAttempts

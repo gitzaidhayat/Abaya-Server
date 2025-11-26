@@ -5,7 +5,7 @@ const connectDB = require('./src/db/db');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 9000;
 connectDB();
 
 const httpServer = createServer(app);

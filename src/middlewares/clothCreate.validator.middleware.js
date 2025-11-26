@@ -10,7 +10,19 @@ const clothValidationRules = [
     body('description')
         .notEmpty().withMessage('Cloth description is required')
         .isString().withMessage('Cloth description must be a string')
-        .isLength({ min: 10, max: 500 }).withMessage('Cloth description must be between 10 and 500 characters')
+        .isLength({ min: 10, max: 2000 }).withMessage('Cloth description must be between 10 and 2000 characters')
+        .trim(),
+    body('price')
+        .notEmpty().withMessage('Price is required')
+        .isNumeric().withMessage('Price must be a number')
+        .isFloat({ min: 0.01 }).withMessage('Price must be greater than 0'),
+    body('size')
+        .notEmpty().withMessage('Size is required')
+        .isString().withMessage('Size must be a string')
+        .trim(),
+    body('color')
+        .notEmpty().withMessage('Color is required')
+        .isString().withMessage('Color must be a string')
         .trim(),
     body().custom((_, { req }) => {
         if (!req.file) {

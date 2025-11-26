@@ -15,11 +15,23 @@ const upload = multer({
 
 router.post(
     '/',
-    authMiddleware.authClothPartnerMiddleware,
+    authMiddleware.authAdminMiddleware,
     upload.single("file"), // <-- changed from "video" to "file"
     validator.clothValidationRules,
     validator.validateRequest,
     clothController.createCloth
+);
+
+/* GET '/api/cloth/categories'  [public] */
+router.get(
+    '/categories',
+    clothController.getCategories
+);
+
+/* GET '/api/cloth/:id'  [public] */
+router.get(
+    '/:id',
+    clothController.getClothById
 );
 
 /* GET '/api/cloth'  [public] */
@@ -32,7 +44,7 @@ router.get (
 
 router.delete(
     '/del/:id',
-    authMiddleware.authClothPartnerMiddleware,
+    authMiddleware.authAdminMiddleware,
     clothController.deleteCloth
 );
 
