@@ -24,7 +24,11 @@ const clothSchema = new mongoose.Schema({
     images: [{
         type: String,
         required: true
-    }]
+    }],
+    category: {
+        type: String,
+        default: 'uncategorized'
+    }
 });
 
 const clothModel = mongoose.model('Cloth', clothSchema);

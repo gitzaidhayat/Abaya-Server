@@ -13,8 +13,18 @@ async function uploadImage(file, fileName){
     return result;
 }
 
-
+async function uploadVideo(file, fileName, folder = 'videos') {
+    const result = await imagekit.upload({
+        file: file,
+        fileName: fileName,
+        folder: folder,
+        useUniqueFileName: true,
+        tags: ['product-video']
+    });
+    return result;
+}
 
 module.exports = {
     uploadImage,
+    uploadVideo,
 }

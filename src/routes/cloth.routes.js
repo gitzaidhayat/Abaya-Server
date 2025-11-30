@@ -1,7 +1,6 @@
 const express = require('express');
 const clothController = require('../controllers/cloth.controllers')
 const authMiddleware = require('../middlewares/auth.middleware');
-const validator = require('../middlewares/clothCreate.validator.middleware');
 const router = express.Router();
 const multer = require('multer');
 
@@ -16,9 +15,7 @@ const upload = multer({
 router.post(
     '/',
     authMiddleware.authAdminMiddleware,
-    upload.single("file"), // <-- changed from "video" to "file"
-    validator.clothValidationRules,
-    validator.validateRequest,
+    upload.single("file"),
     clothController.createCloth
 );
 

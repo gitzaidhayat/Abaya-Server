@@ -15,6 +15,7 @@ async function createCloth(req, res) {
             price: Number(req.body.price),
             size: req.body.size,
             color: req.body.color,
+            category: req.body.category || 'uncategorized',
             images: [fileUploadResult.url]
         });
 
@@ -97,13 +98,43 @@ async function deleteCloth(req, res) {
 
 async function getCategories(req, res) {
     try {
-        // Get unique categories from all cloths
-        const categories = await clothModel.distinct('category');
+        // Get all unique categories with their first image and count
+        const categoriesData = await clothModel.aggregate([
+            {
+                $group: {
+                    _id: '$category',
+                    count: { $sum: 1 },
+                    image: { $first: { $arrayElemAt: ['$images', 0] } },
+                    title: { $first: '$title' }
+                }
+            },
+            {
+                $match: {
+                    _id: { $ne: null, $ne: '' }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    category: '$_id',
+                    count: 1,
+                    image: 1,
+                    title: {
+                        $toUpper: {
+                            $concat: [
+                                { $toUpper: { $substrCP: ['$_id', 0, 1] } },
+                                { $substrCP: ['$_id', 1, { $strLenCP: '$_id' }] }
+                            ]
+                        }
+                    }
+                }
+            }
+        ]);
         
         res.status(200).json({
             success: true,
             message: "Categories fetched successfully",
-            categories: categories.filter(cat => cat) // Remove null/undefined values
+            categories: categoriesData
         });
     } catch (error) {
         res.status(500).json({

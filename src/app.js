@@ -9,6 +9,7 @@ const subscriptionRoutes = require('./routes/subscription.routes')
 const adminRoutes = require('./routes/admin.routes')
 const addressRoutes = require('./routes/address.routes')
 const orderRoutes = require('./routes/order.routes')
+const videoRoutes = require('./routes/productVideo.routes')
 
 
 
@@ -59,6 +60,7 @@ app.use('/api/wishlist', wishlistRoutes);
 app.use('/api/subscribe', subscriptionRoutes);
 app.use('/api/addresses', addressRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/videos', videoRoutes);
 app.use('/admin', adminRoutes);
 
 
